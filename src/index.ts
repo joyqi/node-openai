@@ -43,6 +43,14 @@ export class OpenAI {
             },
             chat: {
                 create: v1.createChat(client)
+            },
+            edits: {
+                create: v1.createEdit(client)
+            },
+            images: {
+                create: v1.createImage(client),
+                edit: v1.editImage(client),
+                createVariation: v1.createImageVariation(client)
             }
         };
     }

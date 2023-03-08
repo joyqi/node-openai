@@ -7,3 +7,5 @@ export type Usage = {
 export * from "./models";
 export * from "./completions";
 export * from "./chat";
+export * from "./edits";
+export * from "./images";

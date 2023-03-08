@@ -2,6 +2,15 @@
 
 An elegant Node.js library written in TypeScript for the OpenAI API.
 
+- [Installation](#installation)
+- [Example](#example)
+- [V1 API](#v1-api)
+  - [Models](#models)
+  - [Completions](#completions)
+  - [Chat](#chat)
+  - [Edits](#edits)
+  - [Images](#images)
+
 ## Installation
 
 ```bash
@@ -46,6 +55,8 @@ To use the OpenAI V1 API, you must call the `v1()` method on the client instance
 const v1 = client.v1();
 ```
 
+Check out the [OpenAI V1 API docs](https://platform.openai.com/docs/api-reference/introduction) for more information.
+
 ### Models
 
 List all available models:
@@ -87,4 +98,47 @@ const chat = await v1.chat.create({
         }
     ]
 });
+```
+
+### Edits
+
+Create an edit:
+
+```javascript
+const edit = await v1.edits.create({
+    model: 'text-davinci-edit-001',
+    input: 'I am a test',
+    instruction: 'Make this text funny',
+});
+```
+
+### Images
+
+Create an image:
+
+```javascript
+const image = await v1.images.create({
+    prompt: 'A cute baby sea otter',
+    n: 1,
+    size: '512x512',
+});
+```
+
+Create image edit:
+
+```javascript
+const imageEdit = await v1.images.edit({
+    prompt: 'Make this image funny',
+    n: 1,
+    size: '512x512',
+}, '/path/to/image.png');
+```
+
+Create image variation:
+
+```javascript
+const imageVariation = await v1.images.variation({
+    n: 1,
+    size: '512x512',
+}, '/path/to/image.png');
 ```
