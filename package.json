@@ -1,0 +1,46 @@
+{
+  "name": "typescript-module-template",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",
+  "bugs": {
+    "url": ""
+  },
+
+  "version": "latest",
+
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "import": "./lib/mjs/index.js",
+      "require": "./lib/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/mjs/index.js",
+  "types": "lib/types/index.d.ts",
+  "scripts": {
+    "clear": "rm -rf ./lib",
+    "patch:esm-js": "npx tsc-esm-fix --tsconfig=tsconfig.mjs.json",
+    "patch:esm-type": "echo '{ \"type\": \"module\" }' >> lib/mjs/package.json",
+    "build:esm": "npx tsc -p tsconfig.mjs.json && npm run patch:esm-js && npm run patch:esm-type",
+    "build:cjs": "npx tsc",
+    "build": "npm run clear && npm run build:esm && npm run build:cjs",
+    "test": "npx mocha"
+  },
+  "devDependencies": {
+    "@types/mocha": "latest",
+    "assert": "latest",
+    "mocha": "latest",
+    "ts-node": "latest",
+    "tsc-esm-fix": "latest",
+    "typescript": "latest"
+  }
+}

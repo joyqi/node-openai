@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["./*"]
+    },
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "declarationDir": "lib/types",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules", "**/*.spec.ts", "lib"]
+}
