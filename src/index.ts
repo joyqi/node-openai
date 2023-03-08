@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import * as v1 from "./v1";
 
 // ApiConfig defines the configuration options for the OpenAI API
