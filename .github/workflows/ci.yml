@@ -55,7 +55,13 @@ jobs:
         id: get-versions
         run: |
           echo node=$(jq -r '.engines.node // "lts/*"' ./package.json) >> $GITHUB_OUTPUT
-          echo pkg=$(jq -r '(.engines | select(.pnpm != null) | "pnpm") // (.engines | select(.yarn != null) | "yarn") // "npm"' ./package.json) >> $GITHUB_OUTPUT
+          if [ -f "yarn.lock" ]; then
+            echo pkg=yarn >> $GITHUB_OUTPUT
+          elif [ -f "pnpm-lock.yaml" ]; then
+            echo pkg=pnpm >> $GITHUB_OUTPUT
+          else
+            echo pkg=npm >> $GITHUB_OUTPUT
+          fi
 
       - name: Setup Node.JS
         uses: actions/setup-node@v3
