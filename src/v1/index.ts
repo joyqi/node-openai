@@ -9,3 +9,5 @@ export * from "./completions";
 export * from "./chat";
 export * from "./edits";
 export * from "./images";
+export * from "./embeddings";
+export * from "./audio";

@@ -13,7 +13,7 @@ type Permission = {
     organization: string;
     group: string | null;
     is_blocking: boolean;
-}
+};
 
 type Model = {
     id: string;

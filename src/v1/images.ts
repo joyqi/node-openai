@@ -29,15 +29,9 @@ type CreateImageVariationRequest = {
     user?: string;
 };
 
-type UrlImage = {
-    url: string;
-};
-
-type B64JsonImage = {
-    b64_json: string;
-};
-
-type ImageData = UrlImage | B64JsonImage;
+type ImageData = Partial<{
+    [key in ImageResponseFormat]: string;
+}>;
 
 type Image = {
     created: number;

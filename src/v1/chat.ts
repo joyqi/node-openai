@@ -21,7 +21,7 @@ type ChatRequest = {
     frequency_penalty?: number;
     logit_bias?: { [key: string]: number };
     user?: string;
-}
+};
 
 type Choice = {
     index: number;

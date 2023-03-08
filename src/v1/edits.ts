@@ -13,14 +13,14 @@ type EditRequest = {
 type Choice = {
     index: number;
     text: string;
-}
+};
 
 type Edit = {
     object: string;
     created: number;
     choices: Choice[];
     usage: Usage;
-}
+};
 
 export function createEdit(client: ApiClient) {
     return async (request: EditRequest): Promise<Edit> => {

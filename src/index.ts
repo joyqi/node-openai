@@ -51,6 +51,13 @@ export class OpenAI {
                 create: v1.createImage(client),
                 edit: v1.editImage(client),
                 createVariation: v1.createImageVariation(client)
+            },
+            embeddings: {
+                create: v1.createEmbedding(client)
+            },
+            audio: {
+                createTranscription: v1.createAudioTranscription(client),
+                createTranslation: v1.createAudioTranslation(client)
             }
         };
     }
