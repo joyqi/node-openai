@@ -46,32 +46,32 @@ export function createImage(client: ApiClient) {
 
 export function editImage(client: ApiClient) {
     return async (request: EditImageRequest, image: string, mask?: string): Promise<Image> => {
-        const form = new FormData();
+        const data = new FormData();
 
         for (const key in request) {
-            form.append(key, '' + request[key as keyof EditImageRequest]);
+            data.append(key, '' + request[key as keyof EditImageRequest]);
         }
 
-        form.append('image', createReadStream(image));
+        data.append('image', createReadStream(image));
 
         if (mask) {
-            form.append('mask', createReadStream(mask));
+            data.append('mask', createReadStream(mask));
         }
 
-        return await client("images/edits", { method: "POST", data: form });
+        return await client("images/edits", { method: "POST", data });
     }
 }
 
 export function createImageVariation(client: ApiClient) {
     return async (request: CreateImageVariationRequest, image: string): Promise<Image> => {
-        const form = new FormData();
+        const data = new FormData();
 
         for (const key in request) {
-            form.append(key, '' + request[key as keyof CreateImageVariationRequest]);
+            data.append(key, '' + request[key as keyof CreateImageVariationRequest]);
         }
 
-        form.append('image', createReadStream(image));
+        data.append('image', createReadStream(image));
 
-        return await client("images/variations", { method: "POST", data: form });
+        return await client("images/variations", { method: "POST", data });
     }
 }

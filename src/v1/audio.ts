@@ -25,28 +25,28 @@ type Audio = Partial<{
 
 export function createAudioTranscription(client: ApiClient) {
     return async (request: CreateAudioTranscriptionRequest, file: string): Promise<Audio> => {
-        const form = new FormData();
+        const data = new FormData();
 
         for (const key in request) {
-            form.append(key, '' + request[key as keyof CreateAudioTranscriptionRequest]);
+            data.append(key, '' + request[key as keyof CreateAudioTranscriptionRequest]);
         }
 
-        form.append('file', createReadStream(file));
+        data.append('file', createReadStream(file));
 
-        return await client("audio/transcriptions", { method: "POST", data: form });
+        return await client("audio/transcriptions", { method: "POST", data });
     }
 }
 
 export function createAudioTranslation(client: ApiClient) {
     return async (request: CreateAudioTranslationRequest, file: string): Promise<Audio> => {
-        const form = new FormData();
+        const data = new FormData();
 
         for (const key in request) {
-            form.append(key, '' + request[key as keyof CreateAudioTranslationRequest]);
+            data.append(key, '' + request[key as keyof CreateAudioTranslationRequest]);
         }
 
-        form.append('file', createReadStream(file));
+        data.append('file', createReadStream(file));
 
-        return await client("audio/translations", { method: "POST", data: form });
+        return await client("audio/translations", { method: "POST", data });
     }
 }

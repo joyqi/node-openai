@@ -12,7 +12,7 @@ export type ApiConfig = {
 // ApiVersion defines the version of the OpenAI API
 export type ApiVersion = "v1" | "v2";
 
-export type ApiClient = (path: string, options: AxiosRequestConfig) => Promise<any>;
+export type ApiClient = (path: string, options: AxiosRequestConfig, direct?: boolean) => Promise<any>;
 
 // OpenAI is the main class for the OpenAI API
 export class OpenAI {
@@ -58,20 +58,27 @@ export class OpenAI {
             audio: {
                 createTranscription: v1.createAudioTranscription(client),
                 createTranslation: v1.createAudioTranslation(client)
+            },
+            files: {
+                list: v1.listFiles(client),
+                retrieve: v1.retrieveFile(client),
+                upload: v1.uploadFile(client),
+                delete: v1.deleteFile(client),
+                retrieveContent: v1.retrieveFileContent(client)
             }
         };
     }
 
     // Generate a client for the given version of the OpenAI API
     private makeClient(version: ApiVersion): ApiClient {
-        return async (path: string, options: AxiosRequestConfig) => {
+        return async (path: string, options: AxiosRequestConfig, direct = false) => {
             const url = `${this.config.endpoint}/${version}/${path}`;
             const response = await axios(Object.assign({ url }, this.config.options, options));
 
-            if (response.headers["content-type"] !== "application/json") {
+            if (!direct && response.headers["content-type"] !== "application/json") {
                 throw new Error(`Unexpected Content-Type: ${response.headers["content-type"]}`);
             } else if (response.status !== 200) {
-                throw new Error(response.data.error.message);
+                throw new Error(direct ? response.statusText : response.data.error.message);
             } else {
                 return response.data;
             }

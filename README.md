@@ -10,6 +10,9 @@ An elegant Node.js library written in TypeScript for the OpenAI API.
   - [Chat](#chat)
   - [Edits](#edits)
   - [Images](#images)
+  - [Embeddings](#embeddings)
+  - [Audio](#audio)
+  - [Files](#files)
 
 ## Installation
 
@@ -141,4 +144,67 @@ const imageVariation = await v1.images.variation({
     n: 1,
     size: '512x512',
 }, '/path/to/image.png');
+```
+
+### Embeddings
+
+Create an embedding:
+
+```javascript
+const embedding = await v1.embeddings.create({
+    model: 'text-embedding-ada-002',
+    input: 'This is a test',
+});
+```
+
+### Audio
+
+Create transcription:
+
+```javascript
+const transcription = await v1.audio.createTranscription({
+    model: 'whisper-1',
+    prompt: 'This is a test',
+}, '/path/to/audio.mp3');
+```
+
+Create translation:
+
+```javascript
+const translation = await v1.audio.createTranslation({
+    model: 'whisper-1',
+    prompt: 'This is a test',
+}, '/path/to/audio.mp3');
+```
+
+### Files
+
+List all available files:
+
+```javascript
+const files = await v1.files.list();
+```
+
+Retrieve a file:
+
+```javascript
+const file = await v1.files.retrieve('file-123');
+```
+
+Upload a file:
+
+```javascript
+const file = await v1.files.upload('/path/to/file.txt', 'fine-tune');
+```
+
+Delete a file:
+
+```javascript
+const file = await v1.files.delete('file-123');
+```
+
+Retrieve a file's contents:
+
+```javascript
+const content = await v1.files.retrieveContents('file-123');
 ```
