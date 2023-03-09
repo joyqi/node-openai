@@ -8,13 +8,13 @@ type EmbeddingRequest = {
 };
 
 type Embedding = {
-    object: string;
+    object: "embedding";
     embedding: number[];
     index: number;
 };
 
 type EmbeddingList = {
-    object: string;
+    object: "list";
     data: Embedding[];
     model: string;
     usage: Omit<Usage, "completion_tokens">;

@@ -29,7 +29,7 @@ type Choice = {
 
 type Completion = {
     id: string;
-    object: string;
+    object: "text_completion";
     created: number;
     model: string;
     choices: Choice[];

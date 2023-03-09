@@ -3,6 +3,7 @@
 An elegant Node.js library written in TypeScript for the OpenAI API.
 
 - [Installation](#installation)
+- [Features](#features)
 - [Example](#example)
 - [V1 API](#v1-api)
   - [Models](#models)
@@ -13,12 +14,29 @@ An elegant Node.js library written in TypeScript for the OpenAI API.
   - [Embeddings](#embeddings)
   - [Audio](#audio)
   - [Files](#files)
+  - [Fine-tunes](#fine-tunes)
+  - [Moderations](#moderations)
 
 ## Installation
 
 ```bash
 npm install node-openai
 ```
+
+### Features
+
+| API | Supported |
+| --- | --- |
+| [Models](https://platform.openai.com/docs/api-reference/models) | ✅ |
+| [Completions](https://platform.openai.com/docs/api-reference/completions) | ✅ |
+| [Chat](https://platform.openai.com/docs/api-reference/chat) | ✅ |
+| [Edits](https://platform.openai.com/docs/api-reference/edits) | ✅ |
+| [Images](https://platform.openai.com/docs/api-reference/images) | ✅ |
+| [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) | ✅ |
+| [Audio](https://platform.openai.com/docs/api-reference/audio) | ✅ |
+| [Files](https://platform.openai.com/docs/api-reference/files) | ✅ |
+| [Fine-tunes](https://platform.openai.com/docs/api-reference/fine-tunes) | ✅ |
+| [Moderations](https://platform.openai.com/docs/api-reference/moderations) | ✅ |
 
 ## Example
 
@@ -72,6 +90,12 @@ Retrieve a model:
 
 ```javascript
 const model = await api.models.retrieve('davinci');
+```
+
+Delete fine-tuned model:
+
+```javascript
+const model = await api.models.delete('curie:ft-acmeco-2021-03-03-21-44-20');
 ```
 
 ### Completions
@@ -207,6 +231,40 @@ Retrieve a file's contents:
 
 ```javascript
 const content = await api.files.retrieveContents('file-123');
+```
+
+### Fine-tunes
+
+Create fine-tune:
+
+```javascript
+const fineTune = await api.fineTunes.create({
+    training_file: 'file-123',
+});
+```
+
+List fine-tunes:
+
+```javascript
+const fineTunes = await api.fineTunes.list();
+```
+
+Retrieve fine-tune:
+
+```javascript
+const fineTune = await api.fineTunes.retrieve('ft-AF1WoRqd3aJAHsqc9NY7iL8F');
+```
+
+Cancel fine-tune:
+
+```javascript
+const fineTune = await api.fineTunes.cancel('ft-AF1WoRqd3aJAHsqc9NY7iL8F');
+```
+
+List fine-tune's events:
+
+```javascript
+const events = await api.fineTunes.listEvents('ft-AF1WoRqd3aJAHsqc9NY7iL8F');
 ```
 
 ### Moderations

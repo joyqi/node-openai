@@ -16,7 +16,7 @@ type Choice = {
 };
 
 type Edit = {
-    object: string;
+    object: "edit";
     created: number;
     choices: Choice[];
     usage: Usage;

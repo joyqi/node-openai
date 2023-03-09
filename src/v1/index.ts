@@ -13,3 +13,4 @@ export * from "./embeddings";
 export * from "./audio";
 export * from "./files";
 export * from "./moderations";
+export * from "./fine-tunes";

@@ -17,16 +17,22 @@ type Permission = {
 
 type Model = {
     id: string;
-    object: string;
+    object: "model";
     owned_by: string;
     permission: Permission[];
     root: string;
     parent: string | null;
 };
 
+type DeletedModel = {
+    id: string;
+    object: "model";
+    deleted: boolean;
+};
+
 type ModelList = {
     data: Model[];
-    object: string;
+    object: "list";
 };
 
 export function listModels(client: ApiClient) {
@@ -39,5 +45,11 @@ export function listModels(client: ApiClient) {
 export function retrieveModel(client: ApiClient) {
     return async (id: string): Promise<Model> => {
         return await client(`models/${id}`, { method: "GET" });
+    }
+}
+
+export function deleteModel(client: ApiClient) {
+    return async (id: string): Promise<DeletedModel> => {
+        return await client(`models/${id}`, { method: "DELETE" });
     }
 }

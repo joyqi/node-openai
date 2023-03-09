@@ -36,7 +36,8 @@ export class OpenAI {
         return {
             models: {
                 list: v1.listModels(client),
-                retrieve: v1.retrieveModel(client)
+                retrieve: v1.retrieveModel(client),
+                delete: v1.deleteModel(client),
             },
             completions: {
                 create: v1.createCompletion(client)
@@ -65,6 +66,13 @@ export class OpenAI {
                 upload: v1.uploadFile(client),
                 delete: v1.deleteFile(client),
                 retrieveContent: v1.retrieveFileContent(client)
+            },
+            fineTunes: {
+                create: v1.createFineTune(client),
+                list: v1.listFineTunes(client),
+                retrieve: v1.retrieveFineTune(client),
+                cancel: v1.cancelFineTune(client),
+                listEvents: v1.listFineTuneEvents(client),
             },
             moderations: {
                 create: v1.createModeration(client)

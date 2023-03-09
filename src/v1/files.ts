@@ -2,9 +2,9 @@ import { createReadStream } from "fs";
 import { ApiClient } from "..";
 import FormData from "form-data";
 
-type File = {
+export type File = {
     id: string;
-    object: string;
+    object: "file";
     bytes: number;
     created_at: number;
     filename: string;
@@ -19,7 +19,7 @@ type DeletedFile = {
 
 type FileList = {
     data: File[];
-    object: string;
+    object: "list";
 };
 
 export function listFiles(client: ApiClient) {

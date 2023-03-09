@@ -31,7 +31,7 @@ type Choice = {
 
 type Chat = {
     id: string;
-    object: string;
+    object: "chat.completion";
     created: number;
     choices: Choice[];
     usage: Usage;
