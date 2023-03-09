@@ -43,7 +43,7 @@ import { OpenAI } from 'node-openai';
 Create an instance of the OpenAI class:
 
 ```javascript
-const client = new OpenAI({
+const openai = new OpenAI({
     apiKey: 'YOUR_API_KEY',
     // organization: 'YOUR_ORGANIZATION_ID',
     // options: { /* Axios Request Options */ },
@@ -55,7 +55,7 @@ const client = new OpenAI({
 To use the OpenAI V1 API, you must call the `v1()` method on the client instance:
 
 ```javascript
-const v1 = client.v1();
+const api = openai.v1();
 ```
 
 Check out the [OpenAI V1 API docs](https://platform.openai.com/docs/api-reference/introduction) for more information.
@@ -65,13 +65,13 @@ Check out the [OpenAI V1 API docs](https://platform.openai.com/docs/api-referenc
 List all available models:
 
 ```javascript
-const models = await v1.models.list();
+const models = await api.models.list();
 ```
 
 Retrieve a model:
 
 ```javascript
-const model = await v1.models.retrieve('davinci');
+const model = await api.models.retrieve('davinci');
 ```
 
 ### Completions
@@ -79,7 +79,7 @@ const model = await v1.models.retrieve('davinci');
 Create a completion:
 
 ```javascript
-const completion = await v1.completions.create({
+const completion = await api.completions.create({
     model: 'davinci',
     prompt: 'This is a test',
     max_tokens: 5,
@@ -92,7 +92,7 @@ const completion = await v1.completions.create({
 Create a chat:
 
 ```javascript
-const chat = await v1.chat.create({
+const chat = await api.chat.create({
     model: 'gpt-3.5-turbo',
     messages: [
         {
@@ -108,7 +108,7 @@ const chat = await v1.chat.create({
 Create an edit:
 
 ```javascript
-const edit = await v1.edits.create({
+const edit = await api.edits.create({
     model: 'text-davinci-edit-001',
     input: 'I am a test',
     instruction: 'Make this text funny',
@@ -120,7 +120,7 @@ const edit = await v1.edits.create({
 Create an image:
 
 ```javascript
-const image = await v1.images.create({
+const image = await api.images.create({
     prompt: 'A cute baby sea otter',
     n: 1,
     size: '512x512',
@@ -130,7 +130,7 @@ const image = await v1.images.create({
 Create image edit:
 
 ```javascript
-const imageEdit = await v1.images.edit({
+const imageEdit = await api.images.edit({
     prompt: 'Make this image funny',
     n: 1,
     size: '512x512',
@@ -140,7 +140,7 @@ const imageEdit = await v1.images.edit({
 Create image variation:
 
 ```javascript
-const imageVariation = await v1.images.variation({
+const imageVariation = await api.images.variation({
     n: 1,
     size: '512x512',
 }, '/path/to/image.png');
@@ -151,7 +151,7 @@ const imageVariation = await v1.images.variation({
 Create an embedding:
 
 ```javascript
-const embedding = await v1.embeddings.create({
+const embedding = await api.embeddings.create({
     model: 'text-embedding-ada-002',
     input: 'This is a test',
 });
@@ -162,7 +162,7 @@ const embedding = await v1.embeddings.create({
 Create transcription:
 
 ```javascript
-const transcription = await v1.audio.createTranscription({
+const transcription = await api.audio.createTranscription({
     model: 'whisper-1',
     prompt: 'This is a test',
 }, '/path/to/audio.mp3');
@@ -171,7 +171,7 @@ const transcription = await v1.audio.createTranscription({
 Create translation:
 
 ```javascript
-const translation = await v1.audio.createTranslation({
+const translation = await api.audio.createTranslation({
     model: 'whisper-1',
     prompt: 'This is a test',
 }, '/path/to/audio.mp3');
@@ -182,29 +182,40 @@ const translation = await v1.audio.createTranslation({
 List all available files:
 
 ```javascript
-const files = await v1.files.list();
+const files = await api.files.list();
 ```
 
 Retrieve a file:
 
 ```javascript
-const file = await v1.files.retrieve('file-123');
+const file = await api.files.retrieve('file-123');
 ```
 
 Upload a file:
 
 ```javascript
-const file = await v1.files.upload('/path/to/file.txt', 'fine-tune');
+const file = await api.files.upload('/path/to/file.txt', 'fine-tune');
 ```
 
 Delete a file:
 
 ```javascript
-const file = await v1.files.delete('file-123');
+const file = await api.files.delete('file-123');
 ```
 
 Retrieve a file's contents:
 
 ```javascript
-const content = await v1.files.retrieveContents('file-123');
+const content = await api.files.retrieveContents('file-123');
+```
+
+### Moderations
+
+Create moderation:
+
+```javascript
+const moderation = await api.moderations.create({
+    model: 'text-moderation-stable',
+    input: 'This is a test',
+});
 ```

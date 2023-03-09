@@ -65,7 +65,10 @@ export class OpenAI {
                 upload: v1.uploadFile(client),
                 delete: v1.deleteFile(client),
                 retrieveContent: v1.retrieveFileContent(client)
-            }
+            },
+            moderations: {
+                create: v1.createModeration(client)
+            },
         };
     }
 

@@ -12,3 +12,4 @@ export * from "./images";
 export * from "./embeddings";
 export * from "./audio";
 export * from "./files";
+export * from "./moderations";
