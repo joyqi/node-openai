@@ -1,6 +1,6 @@
 {
   "name": "node-openai",
-  "keywords": [],
+  "keywords": ["openai", "chatgpt", "api", "sdk"],
   "author": "joyqi",
   "license": "",
   "description": "An elegant NodeJs library for openai api.",
