@@ -23,7 +23,7 @@ type Edit = {
 };
 
 export function createEdit(client: ApiClient) {
-    return async (request: EditRequest): Promise<Edit> => {
-        return await client("edits", { method: "POST", data: request });
+    return async (data: EditRequest): Promise<Edit> => {
+        return await client("edits", { method: "POST", data });
     }
 }

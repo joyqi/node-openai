@@ -1,5 +1,5 @@
 import { ApiClient } from "..";
-import { File } from "./files";
+import { FileObject } from "./files";
 
 type FineTuneHyperparameters = {
     learning_rate_multiplier: number;
@@ -34,10 +34,10 @@ type FineTune = {
     fine_tuned_model: string | null;
     hyperparameters: FineTuneHyperparameters;
     organization_id: string;
-    result_files: File[];
+    result_files: FileObject[];
     status: string;
-    validation_files: File[];
-    training_files: File[];
+    validation_files: FileObject[];
+    training_files: FileObject[];
     updated_at: number;
     events: FineTuneEvent[];
 };
@@ -53,8 +53,8 @@ type FineTuneEvents = {
 };
 
 export function createFineTune(client: ApiClient) {
-    return async (fineTuneRequest: FineTuneRequest): Promise<FineTune> => {
-        return await client("fine-tunes", { method: "POST", data: fineTuneRequest });
+    return async (data: FineTuneRequest): Promise<FineTune> => {
+        return await client("fine-tunes", { method: "POST", data });
     }
 }
 

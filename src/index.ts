@@ -1,34 +1,27 @@
-import axios, { AxiosRequestConfig } from "axios";
 import * as v1 from "./v1";
+import fetchPolyfill from "./polyfill/fetch";
+import FormDataPolyfill from "./polyfill/formdata";
+import { RequestInit as NodeRequestInit } from "node-fetch";
 
 // ApiConfig defines the configuration options for the OpenAI API
 export type ApiConfig = {
     apiKey: string;
     organization?: string;
     endpoint?: string;
-    options?: AxiosRequestConfig;
+};
+
+type RequestConfig = RequestInit & NodeRequestInit & {
+    data?: any
 };
 
 // ApiVersion defines the version of the OpenAI API
 export type ApiVersion = "v1" | "v2";
 
-export type ApiClient = (path: string, options: AxiosRequestConfig, direct?: boolean) => Promise<any>;
+export type ApiClient = (path: string, options: RequestConfig, direct?: boolean) => Promise<any>;
 
 // OpenAI is the main class for the OpenAI API
 export class OpenAI {
-    private config: ApiConfig;
-
-    constructor(cfg: ApiConfig) {
-        this.config = Object.assign({
-            endpoint: "https://api.openai.com",
-            options: {
-                headers: {
-                    Authorization: `Bearer ${cfg.apiKey}`,
-                },
-                validateStatus: () => true
-            }
-        }, cfg);
-    }
+    constructor(private config: ApiConfig) {}
 
     v1() {
         const client = this.makeClient("v1");
@@ -82,16 +75,36 @@ export class OpenAI {
 
     // Generate a client for the given version of the OpenAI API
     private makeClient(version: ApiVersion): ApiClient {
-        return async (path: string, options: AxiosRequestConfig, direct = false) => {
-            const url = `${this.config.endpoint}/${version}/${path}`;
-            const response = await axios(Object.assign({ url }, this.config.options, options));
+        return async (path: string, options: RequestConfig, direct = false) => {
+            const headers: any = {
+                Authorization: `Bearer ${this.config.apiKey}`,
+            };
 
-            if (!direct && response.headers["content-type"] !== "application/json") {
-                throw new Error(`Unexpected Content-Type: ${response.headers["content-type"]}`);
-            } else if (response.status !== 200) {
-                throw new Error(direct ? response.statusText : response.data.error.message);
+            if (options.data) {
+                options.body = JSON.stringify(options.data);
+                delete options.data;
+                headers["Content-Type"] = "application/json";
+            } else if (options.body && options.body instanceof FormDataPolyfill) {
+                headers["Content-Type"] = "multipart/form-data";
+            }
+
+            options.headers = Object.assign(headers, options.headers || {});
+
+            const endpoint = this.config.endpoint || "https://api.openai.com";
+            const url = `${endpoint}/${version}/${path}`;
+            const response = await fetchPolyfill(url, options);
+
+            if (!direct && !response.headers.get("content-type")?.match(/^application\/json/)) {
+                throw new Error(`Unexpected Content-Type: ${response.headers.get("content-type")}`);
+            } else if (direct) {
+                return response.body;
             } else {
-                return response.data;
+                const data = await response.json();
+                if (response.status != 200) {
+                    throw new Error(direct ? response.statusText : data.error.message);
+                } else {
+                    return data;
+                }
             }
         }
     }

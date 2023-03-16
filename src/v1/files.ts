@@ -1,8 +1,8 @@
-import { createReadStream } from "fs";
 import { ApiClient } from "..";
-import FormData from "form-data";
+import FormDataPolyfill from "../polyfill/formdata";
+import readFile from "../polyfill/readfile";
 
-export type File = {
+export type FileObject = {
     id: string;
     object: "file";
     bytes: number;
@@ -18,7 +18,7 @@ type DeletedFile = {
 };
 
 type FileList = {
-    data: File[];
+    data: FileObject[];
     object: "list";
 };
 
@@ -29,13 +29,13 @@ export function listFiles(client: ApiClient) {
 }
 
 export function uploadFile(client: ApiClient) {
-    return async (file: string, purpose: string): Promise<File> => {
-        const data = new FormData();
+    return async (file: string | File, purpose: string): Promise<FileObject> => {
+        const body = new FormDataPolyfill();
 
-        data.append('purpose', purpose);
-        data.append('file', createReadStream(file));
+        body.append('purpose', purpose);
+        body.append('file', await readFile(file));
 
-        return await client("files", { method: "POST", data });
+        return await client("files", { method: "POST", body });
     }
 }
 
@@ -46,7 +46,7 @@ export function deleteFile(client: ApiClient) {
 }
 
 export function retrieveFile(client: ApiClient) {
-    return async (id: string): Promise<File> => {
+    return async (id: string): Promise<FileObject> => {
         return await client(`files/${id}`, { method: "GET" });
     }
 }

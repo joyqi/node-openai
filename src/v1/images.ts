@@ -1,6 +1,6 @@
-import { createReadStream } from "fs";
 import { ApiClient } from "..";
-import FormData from "form-data";
+import FormDataPolyfill from "../polyfill/formdata";
+import readFile from "../polyfill/readfile";
 
 type ImageSize = '256x256' | '512x512' | '1024x1024';
 
@@ -39,39 +39,39 @@ type Image = {
 };
 
 export function createImage(client: ApiClient) {
-    return async (request: CreateImageRequest): Promise<Image> => {
-        return await client("images/generations", { method: "POST", data: request });
+    return async (data: CreateImageRequest): Promise<Image> => {
+        return await client("images/generations", { method: "POST", data });
     }
 }
 
 export function editImage(client: ApiClient) {
-    return async (request: EditImageRequest, image: string, mask?: string): Promise<Image> => {
-        const data = new FormData();
+    return async (request: EditImageRequest, image: string | File, mask?: string | File): Promise<Image> => {
+        const body = new FormDataPolyfill();
 
         for (const key in request) {
-            data.append(key, '' + request[key as keyof EditImageRequest]);
+            body.append(key, '' + request[key as keyof EditImageRequest]);
         }
 
-        data.append('image', createReadStream(image));
+        body.append('image', await readFile(image));
 
         if (mask) {
-            data.append('mask', createReadStream(mask));
+            body.append('mask', await readFile(mask));
         }
 
-        return await client("images/edits", { method: "POST", data });
+        return await client("images/edits", { method: "POST", body });
     }
 }
 
 export function createImageVariation(client: ApiClient) {
-    return async (request: CreateImageVariationRequest, image: string): Promise<Image> => {
-        const data = new FormData();
+    return async (request: CreateImageVariationRequest, image: string | File): Promise<Image> => {
+        const body = new FormData();
 
         for (const key in request) {
-            data.append(key, '' + request[key as keyof CreateImageVariationRequest]);
+            body.append(key, '' + request[key as keyof CreateImageVariationRequest]);
         }
 
-        data.append('image', createReadStream(image));
+        body.append('image', await readFile(image));
 
-        return await client("images/variations", { method: "POST", data });
+        return await client("images/variations", { method: "POST", body });
     }
 }

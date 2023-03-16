@@ -64,7 +64,7 @@ Create an instance of the OpenAI class:
 const openai = new OpenAI({
     apiKey: 'YOUR_API_KEY',
     // organization: 'YOUR_ORGANIZATION_ID',
-    // options: { /* Axios Request Options */ },
+    // endpoint: 'https://api.openai.com',
 });
 ```
 
@@ -107,8 +107,24 @@ const completion = await api.completions.create({
     model: 'davinci',
     prompt: 'This is a test',
     max_tokens: 5,
-    temperature: 0.9
+    temperature: 0.9,
+    stream: false,
 });
+```
+
+If the `stream` option is set to `true`, the completion will be streamed:
+
+```javascript
+const stream = await api.completions.create({
+    model: 'davinci',
+    prompt: 'This is a test',
+    max_tokens: 5,
+    temperature: 0.9,
+    stream: true,
+});
+
+const reader = stream.pipeThrough(new TextDecoderStream()).getReader();
+// Read the stream
 ```
 
 ### Chat

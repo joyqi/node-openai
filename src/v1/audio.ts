@@ -1,6 +1,6 @@
-import { createReadStream } from "fs";
 import { ApiClient } from "..";
-import FormData from "form-data";
+import FormDataPolyfill from "../polyfill/formdata";
+import readFile from "../polyfill/readfile";
 
 type AudioResponseFormat = 'json' | 'text' | 'srt' | 'verbose_json' | 'vtt';
 
@@ -24,29 +24,29 @@ type Audio = Partial<{
 }>;
 
 export function createAudioTranscription(client: ApiClient) {
-    return async (request: CreateAudioTranscriptionRequest, file: string): Promise<Audio> => {
-        const data = new FormData();
+    return async (request: CreateAudioTranscriptionRequest, file: string | File): Promise<Audio> => {
+        const body = new FormData();
 
         for (const key in request) {
-            data.append(key, '' + request[key as keyof CreateAudioTranscriptionRequest]);
+            body.append(key, '' + request[key as keyof CreateAudioTranscriptionRequest]);
         }
 
-        data.append('file', createReadStream(file));
+        body.append('file', await readFile(file));
 
-        return await client("audio/transcriptions", { method: "POST", data });
+        return await client("audio/transcriptions", { method: "POST", body });
     }
 }
 
 export function createAudioTranslation(client: ApiClient) {
-    return async (request: CreateAudioTranslationRequest, file: string): Promise<Audio> => {
-        const data = new FormData();
+    return async (request: CreateAudioTranslationRequest, file: string | File): Promise<Audio> => {
+        const body = new FormDataPolyfill();
 
         for (const key in request) {
-            data.append(key, '' + request[key as keyof CreateAudioTranslationRequest]);
+            body.append(key, '' + request[key as keyof CreateAudioTranslationRequest]);
         }
 
-        data.append('file', createReadStream(file));
+        body.append('file', await readFile(file));
 
-        return await client("audio/translations", { method: "POST", data });
+        return await client("audio/translations", { method: "POST", body });
     }
 }

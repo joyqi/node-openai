@@ -37,7 +37,7 @@ type Completion = {
 };
 
 export function createCompletion(client: ApiClient) {
-    return async (request: CompletionRequest): Promise<Completion> => {
-        return await client("completions", { method: "POST", data: request });
+    return async (data: CompletionRequest): Promise<Completion> => {
+        return await client("completions", { method: "POST", data }, !!data.stream);
     }
 }

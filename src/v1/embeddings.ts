@@ -21,7 +21,7 @@ type EmbeddingList = {
 };
 
 export function createEmbedding(client: ApiClient) {
-    return async (request: EmbeddingRequest): Promise<EmbeddingList> => {
-        return await client("embeddings", { method: "POST", data: request });
+    return async (data: EmbeddingRequest): Promise<EmbeddingList> => {
+        return await client("embeddings", { method: "POST", data });
     }
 }
