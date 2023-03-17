@@ -1,6 +1,5 @@
 import { ApiClient } from "..";
-import FormDataPolyfill from "../polyfill/formdata";
-import readFile from "../polyfill/readfile";
+import { readFile } from "../request";
 
 type AudioResponseFormat = 'json' | 'text' | 'srt' | 'verbose_json' | 'vtt';
 
@@ -25,28 +24,26 @@ type Audio = Partial<{
 
 export function createAudioTranscription(client: ApiClient) {
     return async (request: CreateAudioTranscriptionRequest, file: string | File): Promise<Audio> => {
-        const body = new FormData();
+        const form: Record<string, any> = {};
 
         for (const key in request) {
-            body.append(key, '' + request[key as keyof CreateAudioTranscriptionRequest]);
+            form[key] = request[key as keyof CreateAudioTranscriptionRequest];
         }
 
-        body.append('file', await readFile(file));
-
-        return await client("audio/transcriptions", { method: "POST", body });
+        form['file'] = readFile(file);
+        return await client("audio/transcriptions", { method: "POST", form });
     }
 }
 
 export function createAudioTranslation(client: ApiClient) {
     return async (request: CreateAudioTranslationRequest, file: string | File): Promise<Audio> => {
-        const body = new FormDataPolyfill();
+        const form: Record<string, any> = {};
 
         for (const key in request) {
-            body.append(key, '' + request[key as keyof CreateAudioTranslationRequest]);
+            form[key] = request[key as keyof CreateAudioTranslationRequest];
         }
 
-        body.append('file', await readFile(file));
-
-        return await client("audio/translations", { method: "POST", body });
+        form['file'] = readFile(file);
+        return await client("audio/translations", { method: "POST", form });
     }
 }

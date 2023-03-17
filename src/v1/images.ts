@@ -1,6 +1,5 @@
 import { ApiClient } from "..";
-import FormDataPolyfill from "../polyfill/formdata";
-import readFile from "../polyfill/readfile";
+import { readFile } from "../request";
 
 type ImageSize = '256x256' | '512x512' | '1024x1024';
 
@@ -46,32 +45,32 @@ export function createImage(client: ApiClient) {
 
 export function editImage(client: ApiClient) {
     return async (request: EditImageRequest, image: string | File, mask?: string | File): Promise<Image> => {
-        const body = new FormDataPolyfill();
+        const form: Record<string, any> = {};
 
         for (const key in request) {
-            body.append(key, '' + request[key as keyof EditImageRequest]);
+            form[key] = request[key as keyof EditImageRequest];
         }
 
-        body.append('image', await readFile(image));
+        form['image'] = readFile(image);
 
         if (mask) {
-            body.append('mask', await readFile(mask));
+            form['mask'] = readFile(mask);
         }
 
-        return await client("images/edits", { method: "POST", body });
+        return await client("images/edits", { method: "POST", form });
     }
 }
 
 export function createImageVariation(client: ApiClient) {
     return async (request: CreateImageVariationRequest, image: string | File): Promise<Image> => {
-        const body = new FormData();
+        const form: Record<string, any> = {};
 
         for (const key in request) {
-            body.append(key, '' + request[key as keyof CreateImageVariationRequest]);
+            form[key] = request[key as keyof CreateImageVariationRequest];
         }
 
-        body.append('image', await readFile(image));
+        form['image'] = readFile(image);
 
-        return await client("images/variations", { method: "POST", body });
+        return await client("images/variations", { method: "POST", form });
     }
 }

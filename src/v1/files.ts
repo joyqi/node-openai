@@ -1,6 +1,5 @@
 import { ApiClient } from "..";
-import FormDataPolyfill from "../polyfill/formdata";
-import readFile from "../polyfill/readfile";
+import { readFile } from "../request";
 
 export type FileObject = {
     id: string;
@@ -30,12 +29,12 @@ export function listFiles(client: ApiClient) {
 
 export function uploadFile(client: ApiClient) {
     return async (file: string | File, purpose: string): Promise<FileObject> => {
-        const body = new FormDataPolyfill();
+        const form: Record<string, any> = {
+            'purpose': purpose,
+            'file': readFile(file)
+        };
 
-        body.append('purpose', purpose);
-        body.append('file', await readFile(file));
-
-        return await client("files", { method: "POST", body });
+        return await client("files", { method: "POST", form });
     }
 }
 

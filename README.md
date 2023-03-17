@@ -1,6 +1,12 @@
 # node-openai
 
-An elegant Node.js library written in TypeScript for the OpenAI API.
+**An elegant Node.js library written in TypeScript for the OpenAI API. Pure JavaScript, no dependencies. Works in Node.js and the browser.**
+
+[![npm](https://img.shields.io/npm/v/node-openai.svg)](https://www.npmjs.com/package/node-openai)
+[![npm](https://img.shields.io/npm/dt/node-openai.svg)](https://www.npmjs.com/package/node-openai)
+[![GitHub](https://img.shields.io/github/license/joyqi/node-openai.svg)](https://github.com/joyqi/node-openai/blob/master/LICENSE)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/joyqi/node-openai/ci.yml)
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/joyqi/node-openai)
 
 - [Installation](#installation)
 - [Features](#features)
