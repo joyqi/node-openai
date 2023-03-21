@@ -27,7 +27,7 @@ export type Response = {
     status: number;
     statusText: string;
     headers: Record<string, string | string[] | undefined>;
-    body: ReadableStream | IncomingMessage | any;
+    body: any;
 };
 
 export class StreamFile {
