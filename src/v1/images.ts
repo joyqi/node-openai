@@ -44,7 +44,7 @@ export function createImage(client: ApiClient) {
 }
 
 export function editImage(client: ApiClient) {
-    return async (request: EditImageRequest, image: string | File, mask?: string | File): Promise<Image> => {
+    return async (request: EditImageRequest, image: string | Blob, mask?: string | Blob): Promise<Image> => {
         const form: Record<string, any> = {};
 
         for (const key in request) {
@@ -62,7 +62,7 @@ export function editImage(client: ApiClient) {
 }
 
 export function createImageVariation(client: ApiClient) {
-    return async (request: CreateImageVariationRequest, image: string | File): Promise<Image> => {
+    return async (request: CreateImageVariationRequest, image: string | Blob): Promise<Image> => {
         const form: Record<string, any> = {};
 
         for (const key in request) {

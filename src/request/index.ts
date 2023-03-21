@@ -13,8 +13,15 @@ export type Format = 'json' | 'text' | 'original';
 export interface Feature {
     forRequest: (init: Init, options: Options) => void;
     forRequestClient: (init: Init, client: ClientRequest) => Promise<void>;
-    forFetch: (init: Init, options: RequestInit) => void;
+    forFetch: (init: Init, options: FetchOptions) => void;
 }
+
+export type FetchOptions = {
+    method?: string;
+    headers?: Record<string, string>;
+    body?: any;
+    signal?: AbortSignal;
+};
 
 export type Response = {
     status: number;
@@ -28,7 +35,7 @@ export class StreamFile {
 
     public stream: Blob | ReadStream;
 
-    constructor(file: string | File) {
+    constructor(file: string | Blob) {
         if (typeof file === "string") {
             const { createReadStream } = require("fs");
             this.stream = createReadStream(file);
@@ -44,7 +51,7 @@ export class StreamFile {
     }
 }
 
-export function readFile(file: string | File) {
+export function readFile(file: string | Blob) {
     return new StreamFile(file);
 }
 
@@ -57,13 +64,15 @@ export async function request(url: string, init: Init, format: Format): Promise<
     };
 
     if (typeof fetch === "function") {
-        const options: RequestInit = {};
+        const options: FetchOptions = {};
         await requestFeature(async (feature) => feature.forFetch(init, options));
 
         const resp = await fetch(url, options);
         response.status = resp.status;
         response.statusText = resp.statusText;
-        response.headers = Object.fromEntries(resp.headers.entries());
+        resp.headers.forEach((value, key) => {
+            response.headers[key.toLocaleLowerCase()] = value;
+        });
 
         if (format === "json") {
             if (!resp.headers.get("content-type")?.match(/^application\/json/)) {

@@ -23,7 +23,7 @@ type Audio = Partial<{
 }>;
 
 export function createAudioTranscription(client: ApiClient) {
-    return async (request: CreateAudioTranscriptionRequest, file: string | File): Promise<Audio> => {
+    return async (request: CreateAudioTranscriptionRequest, file: string | Blob): Promise<Audio> => {
         const form: Record<string, any> = {};
 
         for (const key in request) {
@@ -36,7 +36,7 @@ export function createAudioTranscription(client: ApiClient) {
 }
 
 export function createAudioTranslation(client: ApiClient) {
-    return async (request: CreateAudioTranslationRequest, file: string | File): Promise<Audio> => {
+    return async (request: CreateAudioTranslationRequest, file: string | Blob): Promise<Audio> => {
         const form: Record<string, any> = {};
 
         for (const key in request) {

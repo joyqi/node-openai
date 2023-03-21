@@ -1,5 +1,5 @@
 import { ClientRequest } from "http";
-import { Feature, Options, Init, StreamFile } from "..";
+import { Feature, Options, Init, StreamFile, FetchOptions } from "..";
 import { ReadStream } from "fs";
 
 declare module ".." {
@@ -51,7 +51,7 @@ export class FormFeature implements Feature {
         }
     }
 
-    forFetch(init: Init, options: RequestInit) {
+    forFetch(init: Init, options: FetchOptions) {
         if (init.form) {
             options.headers = {
                 ...options.headers,

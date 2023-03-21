@@ -28,7 +28,7 @@ export function listFiles(client: ApiClient) {
 }
 
 export function uploadFile(client: ApiClient) {
-    return async (file: string | File, purpose: string): Promise<FileObject> => {
+    return async (file: string | Blob, purpose: string): Promise<FileObject> => {
         const form: Record<string, any> = {
             'purpose': purpose,
             'file': readFile(file)

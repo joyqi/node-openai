@@ -1,5 +1,5 @@
 import { ClientRequest } from "http";
-import { Feature, Options, Init } from "..";
+import { Feature, Options, Init, FetchOptions } from "..";
 
 declare module ".." {
     interface Init {
@@ -19,7 +19,7 @@ export class HeadersFeature implements Feature {
 
     async forRequestClient(init: Init, client: ClientRequest) {}
 
-    forFetch(init: Init, options: RequestInit) {
+    forFetch(init: Init, options: FetchOptions) {
         if (init.headers) {
             options.headers = {
                 ...options.headers,

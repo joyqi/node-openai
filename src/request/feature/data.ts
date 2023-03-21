@@ -1,5 +1,5 @@
 import { ClientRequest } from "http";
-import { Feature, Options, Init } from "..";
+import { Feature, Options, Init, FetchOptions } from "..";
 
 declare module ".." {
     interface Init {
@@ -23,7 +23,7 @@ export class DataFeature implements Feature {
         }
     }
 
-    forFetch(init: Init, options: RequestInit) {
+    forFetch(init: Init, options: FetchOptions) {
         if (init.data) {
             options.headers = {
                 ...options.headers,
